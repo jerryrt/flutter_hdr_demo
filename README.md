@@ -1,6 +1,7 @@
 # hdr_sandwitch
 
-A new Flutter project.
+A minimum viable runnable demo from native rendering with iOS AVPlayerLayer, which can render HDR
+content on iOS devices.
 
 ## Getting Started
 

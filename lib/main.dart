@@ -105,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: UiKitView(
                   viewType: "FLNativeView",
                   layoutDirection: TextDirection.ltr,
-                  creationParams: <String, dynamic>{},
+                  creationParams: <String, dynamic>{'video': 'a_video_url_here'},
                   creationParamsCodec: const StandardMessageCodec()
               )
             ),

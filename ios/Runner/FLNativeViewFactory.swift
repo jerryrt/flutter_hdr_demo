@@ -3,44 +3,48 @@ import UIKit
 import AVKit
 
 class FLNativeViewFactory: NSObject, FlutterPlatformViewFactory {
-    private var messenger: FlutterBinaryMessenger
+  private var messenger: FlutterBinaryMessenger
 
-    init(messenger: FlutterBinaryMessenger) {
-        self.messenger = messenger
-        super.init()
-    }
+  init(messenger: FlutterBinaryMessenger) {
+    self.messenger = messenger
+    super.init()
+  }
 
-    func create(
-        withFrame frame: CGRect,
-        viewIdentifier viewId: Int64,
-        arguments args: Any?
-    ) -> FlutterPlatformView {
-        return FLNativeView(
-            frame: frame,
-            viewIdentifier: viewId,
-            arguments: args,
-            binaryMessenger: messenger)
-    }
+  func create(
+    withFrame frame: CGRect,
+    viewIdentifier viewId: Int64,
+    arguments args: Any?
+  ) -> FlutterPlatformView {
+    return FLNativeView(
+        frame: frame,
+        viewIdentifier: viewId,
+        arguments: args,
+        binaryMessenger: messenger)
+  }
+  
+  func createArgsCodec() -> FlutterMessageCodec & NSObjectProtocol {
+    return FlutterStandardMessageCodec.sharedInstance()
+  }
 }
 
 class FLNativeView: NSObject, FlutterPlatformView {
-    private var _view: UIView
+  private var _view: UIView
 
-    init(
-        frame: CGRect,
-        viewIdentifier viewId: Int64,
-        arguments args: Any?,
-        binaryMessenger messenger: FlutterBinaryMessenger?
-    ) {
-      print("given view size: \(frame)")
-      _view = FLEmbedView()
-      _view.backgroundColor = UIColor.blue
-      super.init()
-    }
+  init(
+      frame: CGRect,
+      viewIdentifier viewId: Int64,
+      arguments args: Any?,
+      binaryMessenger messenger: FlutterBinaryMessenger?
+  ) {
+    print("given view size: \(frame), args: \(String(describing: args))")
+    _view = FLEmbedView()
+    _view.backgroundColor = UIColor.black
+    super.init()
+  }
 
-    func view() -> UIView {
-        return _view
-    }
+  func view() -> UIView {
+      return _view
+  }
 }
 
 class FLEmbedView : UIView {
@@ -56,9 +60,9 @@ class FLEmbedView : UIView {
     super.init(frame: frame)
     
     _nativeLabel = UILabel()
-    _nativeLabel?.text = "Native text from iOS"
+    _nativeLabel?.text = "NATIVE HDR"
     _nativeLabel?.textColor = UIColor.white
-    _nativeLabel?.backgroundColor = UIColor.red
+    _nativeLabel?.backgroundColor = UIColor.clear
     _nativeLabel?.textAlignment = .center
     _nativeLabel?.frame = CGRect.zero
     
@@ -89,5 +93,14 @@ class FLEmbedView : UIView {
     _avLayer?.frame = self.bounds
     _nativeLabel?.frame = CGRect(x: 10, y: 10, width: self.bounds.width-20, height: 28)
     super.layoutSubviews()
+  }
+  
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
+    if (self.window == nil) {
+      _avPlayer?.pause()
+      _avPlayer?.replaceCurrentItem(with: nil)
+      print("avplayer resetted.")
+    }
   }
 }

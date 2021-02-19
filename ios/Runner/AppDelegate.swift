@@ -8,7 +8,7 @@ import Flutter
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     GeneratedPluginRegistrant.register(with: self)
-    weak var registrar = self.registrar(forPlugin: "hdr-sandwitch")
+    weak var registrar = self.registrar(forPlugin: "hdr.sandwitch")
 
     let factory = FLNativeViewFactory(messenger: registrar!.messenger())
     registrar!.register(factory, withId: "FLNativeView")
